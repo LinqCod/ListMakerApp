@@ -5,17 +5,24 @@ import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ViewModelProvider
+import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.RecyclerView
 import com.linqcod.listmakerapp.databinding.MainActivityBinding
 import com.linqcod.listmakerapp.ui.main.MainFragment
+import com.linqcod.listmakerapp.ui.main.MainViewModel
+import com.linqcod.listmakerapp.ui.main.MainViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: MainActivityBinding
+    private lateinit var viewModel: MainViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        viewModel = ViewModelProvider(this, MainViewModelFactory(PreferenceManager.getDefaultSharedPreferences(this)))
+            .get(MainViewModel::class.java)
         binding = MainActivityBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
