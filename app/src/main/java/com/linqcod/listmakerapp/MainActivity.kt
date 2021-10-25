@@ -12,6 +12,7 @@ import com.linqcod.listmakerapp.databinding.MainActivityBinding
 import com.linqcod.listmakerapp.ui.main.MainFragment
 import com.linqcod.listmakerapp.ui.main.MainViewModel
 import com.linqcod.listmakerapp.ui.main.MainViewModelFactory
+import com.linqcod.listmakerapp.ui.main.model.TaskList
 
 class MainActivity : AppCompatActivity() {
 
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         builder.setPositiveButton(positiveButtonTitle) {
             dialog, _ ->
             dialog.dismiss()
+            viewModel.saveList(TaskList(listTitleEditText.text.toString()))
         }
 
         builder.create().show()
