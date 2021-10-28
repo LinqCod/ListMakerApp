@@ -32,4 +32,14 @@ class MainViewModel(
         lists.add(list)
         onListAdded.invoke()
     }
+
+    fun updateList(list: TaskList) {
+        sharedPreferences.edit().putStringSet(list.title, list.tasks.toHashSet()).apply()
+        lists.add(list)
+    }
+
+    fun refreshLists() {
+        lists.clear()
+        lists.addAll(retrieveLists())
+    }
 }

@@ -1,10 +1,12 @@
 package com.linqcod.listmakerapp
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputType
 import android.widget.EditText
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
@@ -17,8 +19,23 @@ import com.linqcod.listmakerapp.ui.main.model.TaskList
 
 class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionListener {
 
+    companion object {
+        const val INTENT_LIST_KEY = "list"
+        const val LIST_DETAIL_REQUEST_CODE = 1
+    }
+
     private lateinit var binding: MainActivityBinding
     private lateinit var viewModel: MainViewModel
+
+    private val resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+        result ->
+        if(result.resultCode == Activity.RESULT_OK) {
+            result.data?.let {
+                viewModel.updateList(it.getParcelableExtra(INTENT_LIST_KEY)!!)
+                viewModel.refreshLists()
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,11 +82,7 @@ class MainActivity : AppCompatActivity(), MainFragment.MainFragmentInteractionLi
     private fun showListDetail(list: TaskList) {
         val listDetailIntent = Intent(this, ListDetailActivity::class.java)
         listDetailIntent.putExtra(INTENT_LIST_KEY, list)
-        startActivity(listDetailIntent)
-    }
-
-    companion object {
-        const val INTENT_LIST_KEY = "list"
+        resultLauncher.launch(listDetailIntent)
     }
 
     override fun listItemTapped(list: TaskList) {
