@@ -12,20 +12,19 @@ import com.linqcod.listmakerapp.databinding.MainFragmentBinding
 import com.linqcod.listmakerapp.ui.main.adapter.ListSelectionRecyclerViewAdapter
 import com.linqcod.listmakerapp.ui.main.model.TaskList
 
-class MainFragment(
-    private val clickListener: MainFragmentInteractionListener
-) : Fragment(), ListSelectionRecyclerViewAdapter.ListSelectionRecyclerViewClickListener {
+class MainFragment() : Fragment(), ListSelectionRecyclerViewAdapter.ListSelectionRecyclerViewClickListener {
 
     interface MainFragmentInteractionListener {
         fun listItemTapped(list: TaskList)
     }
 
     companion object {
-        fun newInstance(clickListener: MainFragmentInteractionListener) = MainFragment(clickListener)
+        fun newInstance() = MainFragment()
     }
 
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
+    lateinit var clickListener: MainFragmentInteractionListener
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

@@ -9,10 +9,13 @@ class MainViewModel(
 ) : ViewModel() {
 
     lateinit var onListAdded: (() -> Unit)
+    lateinit var onTaskAdded: (() -> Unit)
 
     val lists: MutableList<TaskList> by lazy {
         retrieveLists()
     }
+
+    lateinit var list: TaskList
 
     private fun retrieveLists(): MutableList<TaskList> {
         val sharedPreferencesContents = sharedPreferences.all
@@ -42,4 +45,10 @@ class MainViewModel(
         lists.clear()
         lists.addAll(retrieveLists())
     }
+
+    fun addTask(task: String) {
+        list.tasks.add(task)
+        onTaskAdded.invoke()
+    }
+
 }
